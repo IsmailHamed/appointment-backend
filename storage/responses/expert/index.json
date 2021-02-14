@@ -1,0 +1,16 @@
+{
+    "data": {
+        "identifier": 667752948,
+        "firstName": "Prof. Clementina Heathcote DDS",
+        "lastName": "Prof. Zelda Pouros",
+        "email": "scartwright@example.com",
+        "status": 1,
+        "imageLink": "http:\/\/localhost:8080\/storage\/UsersImages\/e17832834b5367324fb6824594cb3519_20201221122528000.png",
+        "roles": [],
+        "permissions": [],
+        "emailVerified": true,
+        "creationDate": "2002-12-27 15:41:08",
+        "lastChange": "2002-01-06 13:39:50",
+        "deleteDate": null
+    }
+}
