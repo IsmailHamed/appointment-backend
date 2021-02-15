@@ -8,6 +8,7 @@ use App\Enums\Days;
 use App\Models\Expert;
 use App\Models\User;
 use App\Models\WorkHour;
+use Illuminate\Support\Carbon;
 use Tests\Feature\APITestCase;
 
 class StoreTest extends APITestCase
@@ -135,6 +136,36 @@ class StoreTest extends APITestCase
         $response->assertStatus(200);
         $this->assertEquals(7, $expert->workHours->count());
         $response->assertJson(['message' => "The expert's work hours added successfully.", 'status_code' => 200]);
+    }
+
+    public function test_store_work_hours_to_expert_by_UTC()
+    {
+        $admin = $this->getAdministratorUser();
+        $expert = Expert::factory()->create([
+            'time_zone' => 'EET'
+        ]);
+        $data = [
+            'saturday' => [
+                'day' => Days::ALL,
+                'from' => '13:00',
+                'to' => '14:00'
+            ]
+        ];
+        $response = $this->actingAs($admin)
+            ->postJson('experts/' . $expert->id . '/workHours', $data);
+        $response->assertStatus(200);
+        $workHours = $expert->workHours->first();
+        $from = $data['saturday']['from'];
+        $time_zone_expert = $expert->time_zone;
+        $to = $data['saturday']['to'];
+        $this->assertNotEquals((string)$workHours->from, $from . ':00');
+        $this->assertNotEquals((string)$workHours->to, $to . ':00');
+        $from_UTC = Carbon::createFromFormat('H:i', $from,$time_zone_expert)
+            ->setTimezone('UTC')->format('H:i:s');
+        $to_UTC = Carbon::createFromFormat('H:i', $to, $time_zone_expert)
+            ->setTimezone('UTC')->format('H:i:s');
+        $this->assertEquals((string)$workHours->from, (string)$from_UTC);
+        $this->assertEquals((string)$workHours->to, (string)$to_UTC);
     }
 
     private function requestData()

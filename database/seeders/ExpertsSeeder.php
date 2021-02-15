@@ -10,18 +10,18 @@ use App\Models\Expert;
 use App\Models\User;
 use App\Models\WorkHour;
 use Illuminate\Database\Seeder;
-use Illuminate\Foundation\Testing\WithFaker;
 
 class ExpertsSeeder extends Seeder
 {
     public function run()
     {
+        //here we convert time to utc
         $this->createExpert('William ', 'Jordan', 'Doctor',
-            'Anabar', 'NZST', '06:00', '17:00');
+            'Anabar', 'NZST', '18:00', '05:00');
         $this->createExpert('Quasi', 'Shawa', 'Civil engineer',
-            'Syria', 'EEST', '06:00', '12:00');
+            'Syria', 'EEST', '04:00', '10:00');
         $this->createExpert('Shimaa', 'Badawy', 'Computer Engineer',
-            'Egypt', 'EET', '13:00', '14:00');
+            'Egypt', 'EET', '11:00', '12:00');
     }
 
     private function createExpert($fitstName, $lastName, $job, $country, $time_zone, $from, $to)
