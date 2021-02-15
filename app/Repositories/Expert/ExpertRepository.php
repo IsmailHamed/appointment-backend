@@ -99,7 +99,7 @@ class ExpertRepository implements ExpertInterface
         $workHours = $expert->workHours->firstWhere('day', '=', Days::ALL);
         $from = $workHours->from;
         $to = $workHours->to;;
-        $calculateWorkHoursInDay = (strtotime($to) - strtotime($from)) / 60;
+        $calculateWorkHoursInDay = (abs(strtotime($to) - strtotime($from))) / 60;
         $availableWorkHoursInDay = $calculateWorkHoursInDay - $durationBookings;
         $availableDuration = BookingDuration::getValues();
         foreach ($availableDuration as $key => $duration) {
