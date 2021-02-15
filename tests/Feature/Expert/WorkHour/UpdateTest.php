@@ -35,11 +35,11 @@ class UpdateTest extends APITestCase
         $workHour = WorkHour::factory()->create();
         $response = $this->actingAs($admin)
             ->putJson('experts/' . $workHour->expert_id . '/workHours/' . $workHour->id,
-                    [
-                        'day' => "50",
-                        'from' => $this->faker->time($format = 'H:i'),
-                        'to' => $this->faker->time($format = 'H:i'),
-                    ]
+                [
+                    'day' => "50",
+                    'from' => $this->faker->time($format = 'H:i'),
+                    'to' => $this->faker->time($format = 'H:i'),
+                ]
             );
         $response
             ->assertStatus(422)
@@ -68,8 +68,9 @@ class UpdateTest extends APITestCase
         $response->assertStatus(200);
         $workHour = $workHour->refresh();
         $this->assertSame($day, (int)$workHour->day);
-        $this->assertSame($from . ':00', $workHour->from);
-        $this->assertSame($to . ':00', $workHour->to);
+        //because we convert to utc
+        $this->assertNotSame($from . ':00', $workHour->from);
+        $this->assertNotSame($to . ':00', $workHour->to);
         $response->assertJson(['message' => "The expert's work hour updated successfully.", 'status_code' => 200]);
     }
 

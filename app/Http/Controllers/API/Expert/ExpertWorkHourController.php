@@ -22,7 +22,6 @@ class ExpertWorkHourController extends Controller
         //todo WorkHourTransformer
         $this->middleware('auth:api')->except('index');
 //        $this->middleware('transform.input:' . WorkHourTransformer::class)->except(['delete']);
-
         $this->expertWorkHour = $expertWorkHour;
     }
 

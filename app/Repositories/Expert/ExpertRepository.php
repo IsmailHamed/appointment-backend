@@ -97,7 +97,6 @@ class ExpertRepository implements ExpertInterface
         $durationBookings = $expert->bookings()->whereDate('start_at', $dateBooking)->sum('duration');
         //we suppose work every day
         $workHours = $expert->workHours->firstWhere('day', '=', Days::ALL);
-
         $from = $workHours->from;
         $to = $workHours->to;;
         $calculateWorkHoursInDay = (strtotime($to) - strtotime($from)) / 60;
@@ -110,7 +109,7 @@ class ExpertRepository implements ExpertInterface
         }
         $timesAvailable = [];
         $from = Carbon::createFromFormat('Y-m-d H:i:s', $dateBooking . ' ' . $from);
-        $to = Carbon::createFromFormat('Y-m-d H:i:s', $dateBooking . ' ' . $to);
+        $to = $from->copy()->addMinutes($calculateWorkHoursInDay);
 
         $bookings = $expert->bookings()->whereDate('start_at', $dateBooking)->get(['start_at', 'finish_at']);
 
